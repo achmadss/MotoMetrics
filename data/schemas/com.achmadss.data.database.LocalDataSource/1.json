@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1c9909b83466afa09324ae07e407f2d6",
+    "identityHash": "326e9688f535b461887b3da139ad1920",
     "entities": [
       {
         "tableName": "Car",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `capacity` INTEGER NOT NULL, `type` TEXT NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `capacity` INTEGER NOT NULL, `type` TEXT NOT NULL, `name` TEXT NOT NULL, `stock` INTEGER NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -30,6 +30,18 @@
             "fieldPath": "type",
             "columnName": "type",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stock",
+            "columnName": "stock",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -62,7 +74,7 @@
       },
       {
         "tableName": "Motorcycle",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `suspension` TEXT NOT NULL, `transmission` TEXT NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `suspension` TEXT NOT NULL, `transmission` TEXT NOT NULL, `name` TEXT NOT NULL, `stock` INTEGER NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -86,6 +98,18 @@
             "fieldPath": "transmission",
             "columnName": "transmission",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stock",
+            "columnName": "stock",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -158,7 +182,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1c9909b83466afa09324ae07e407f2d6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '326e9688f535b461887b3da139ad1920')"
     ]
   }
 }

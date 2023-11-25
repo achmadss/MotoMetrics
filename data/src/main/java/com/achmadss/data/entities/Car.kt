@@ -11,7 +11,9 @@ data class Car(
     val engine: String,
     val capacity: Int,
     val type: String,
+    override val name: String,
+    override val stock: Int,
     override val releaseDate: LocalDateTime,
     override val color: String,
     override val price: Double
-) : Vehicle(releaseDate, color, price)
+) : Vehicle(name, stock, releaseDate, color, price)

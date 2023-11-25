@@ -1,9 +1,13 @@
 package com.achmadss.data.repositories
 
 import com.achmadss.data.DataState
+import com.achmadss.data.dao.VehicleDao
 import com.achmadss.data.database.LocalDataSourceProvider
+import com.achmadss.data.entities.Car
+import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.Transaction
 import com.achmadss.data.entities.TransactionWithVehicle
+import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -12,12 +16,43 @@ import kotlinx.coroutines.flow.flowOn
 
 object TransactionRepository {
 
-    fun upsertTransaction(transaction: Transaction) = flow {
+    fun createNewTransaction(transaction: Transaction) = flow {
         emit(DataState.Loading)
-        val result = LocalDataSourceProvider.transactionDao().upsertTransaction(transaction)
-        if (result == -1L) throw Error("Upsert failed")
+        handleVehicleTransaction(transaction)
+        val result = LocalDataSourceProvider.transactionDao().createNewTransaction(transaction)
+        if (result == -1L) throw Error("Create new transaction failed")
         emit(DataState.Success(result))
-    }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
+    }.catch {
+        emit(DataState.Error(it))
+    }.flowOn(Dispatchers.IO)
+
+    private fun handleVehicleTransaction(transaction: Transaction) {
+        when (transaction.vehicleType) {
+            VehicleType.CAR -> reduceStockIfAvailable(
+                LocalDataSourceProvider.vehicleDao()::getCarById,
+                LocalDataSourceProvider.vehicleDao()::reduceCarStock,
+                transaction.vehicleId
+            )
+            VehicleType.MOTORCYCLE -> reduceStockIfAvailable(
+                LocalDataSourceProvider.vehicleDao()::getMotorcycleById,
+                LocalDataSourceProvider.vehicleDao()::reduceMotorcycleStock,
+                transaction.vehicleId
+            )
+        }
+    }
+
+    private inline fun <reified T : Vehicle> reduceStockIfAvailable(
+        getVehicle: (Long) -> T?,
+        reduceStock: (Long) -> Unit,
+        vehicleId: Long
+    ) {
+        val vehicle = getVehicle(vehicleId)
+        vehicle?.let {
+            if (it.stock <= 0) throw Error("${T::class.simpleName} stock is empty")
+            reduceStock(vehicleId)
+        } ?: throw Error("${T::class.simpleName} not found")
+    }
+
 
     fun getAllTransactionsWithVehicles() = flow {
         val allTransaction = LocalDataSourceProvider.transactionDao().getAllTransactions()

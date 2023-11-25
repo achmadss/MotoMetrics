@@ -20,9 +20,15 @@ interface VehicleDao {
     @Query("SELECT * FROM Car")
     fun getAllCars(): List<Car>
 
+    @Query("SELECT * FROM Car WHERE id = :id")
+    fun getCarById(id: Long): Car?
+
     @Transaction
     @Query("SELECT * FROM Car WHERE id = :id")
     fun getCarWithTransactions(id: Long): CarWithTransactions
+
+    @Query("UPDATE Car SET stock = stock - 1 WHERE id = :id AND stock > 0")
+    fun reduceCarStock(id: Long)
 
     // motorcycle
 
@@ -32,8 +38,14 @@ interface VehicleDao {
     @Query("SELECT * FROM Motorcycle")
     fun getAllMotorcycles(): List<Motorcycle>
 
+    @Query("SELECT * FROM Motorcycle WHERE id = :id")
+    fun getMotorcycleById(id: Long): Motorcycle?
+
     @Transaction
     @Query("SELECT * FROM Motorcycle WHERE id = :id")
     fun getMotorcycleWithTransactions(id: Long): MotorcycleWithTransactions
+
+    @Query("UPDATE Motorcycle SET stock = stock - 1 WHERE id = :id AND stock > 0")
+    fun reduceMotorcycleStock(id: Long)
 
 }
