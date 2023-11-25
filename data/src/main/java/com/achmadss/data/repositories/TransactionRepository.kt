@@ -2,8 +2,6 @@ package com.achmadss.data.repositories
 
 import com.achmadss.data.DataState
 import com.achmadss.data.database.LocalDataSourceProvider
-import com.achmadss.data.entities.Car
-import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.Transaction
 import com.achmadss.data.entities.TransactionWithVehicle
 import com.achmadss.data.entities.base.VehicleType
@@ -27,8 +25,8 @@ object TransactionRepository {
         val allMotorcycles = LocalDataSourceProvider.vehicleDao().getAllMotorcycles().associateBy { it.id }
         val transactionsWithVehicles = allTransaction.map {
             val vehicle = when(it.vehicleType) {
-                VehicleType.Car -> allCars[it.vehicleId]
-                VehicleType.Motorcycle -> allMotorcycles[it.vehicleId]
+                VehicleType.CAR -> allCars[it.vehicleId]
+                VehicleType.MOTORCYCLE -> allMotorcycles[it.vehicleId]
             }
             TransactionWithVehicle(it, vehicle)
         }

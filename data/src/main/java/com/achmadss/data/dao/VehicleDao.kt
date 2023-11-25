@@ -2,6 +2,7 @@ package com.achmadss.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.achmadss.data.entities.Car
 import com.achmadss.data.entities.Motorcycle
@@ -19,6 +20,7 @@ interface VehicleDao {
     @Query("SELECT * FROM Car")
     fun getAllCars(): List<Car>
 
+    @Transaction
     @Query("SELECT * FROM Car WHERE id = :id")
     fun getCarWithTransactions(id: Long): CarWithTransactions
 
@@ -30,6 +32,7 @@ interface VehicleDao {
     @Query("SELECT * FROM Motorcycle")
     fun getAllMotorcycles(): List<Motorcycle>
 
+    @Transaction
     @Query("SELECT * FROM Motorcycle WHERE id = :id")
     fun getMotorcycleWithTransactions(id: Long): MotorcycleWithTransactions
 
