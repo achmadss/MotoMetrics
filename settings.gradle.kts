@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MotoMetrics"
 include(":app")
- 
+include(":data")
