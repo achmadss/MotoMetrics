@@ -66,4 +66,15 @@ object TransactionRepository {
         emit(DataState.Success(transactionsWithVehicles.sortedByDescending { it.transaction.createdAt }))
     }.catch { DataState.Error(it) }.flowOn(Dispatchers.IO)
 
+    fun getTransactionsByVehicleIdAndVehicleType(
+        id: Long,
+        vehicleType: VehicleType
+    ) = flow {
+        emit(DataState.Loading)
+        emit(DataState.Success(
+            LocalDataSourceProvider.transactionDao()
+                .getTransactionsByVehicleIdAndVehicleType(id, vehicleType))
+        )
+    }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
+
 }

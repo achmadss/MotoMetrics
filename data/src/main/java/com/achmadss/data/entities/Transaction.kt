@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.achmadss.data.entities.base.VehicleType
 import java.time.LocalDateTime
 
-@Entity
+@Entity(tableName = "transactions")
 data class Transaction(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     val vehicleId: Long,

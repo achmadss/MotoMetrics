@@ -61,11 +61,13 @@ fun NavGraphBuilder.routeVehicleDetail(
         val viewModel = viewModel<VehicleDetailViewModel>()
         val uiState by viewModel.uiState.collectAsState()
         LaunchedEffect(Unit) {
-            viewModel.getVehicleWithTransactions(id, type)
+            viewModel.getVehicleByIdAndType(id, type)
+            viewModel.getTransactionsByVehicleIdAndVehicleType(id, type)
         }
         VehicleDetailScreen(
             loading = uiState.loading,
             vehicle = uiState.vehicle,
+            vehicleType = type,
             errorMessage = uiState.errorMessage,
             transactions = uiState.transactions
         ) {
@@ -78,6 +80,7 @@ fun NavGraphBuilder.routeVehicleDetail(
 fun VehicleDetailScreen(
     loading: Boolean,
     vehicle: Vehicle?,
+    vehicleType: VehicleType,
     errorMessage: String,
     transactions: List<Transaction>,
     onBackPress: () -> Unit,
@@ -132,7 +135,10 @@ fun VehicleDetailScreen(
                 }
                 VehicleDetailItem(label = "Name", value = vehicle.name)
                 VehicleDetailItem(label = "Price", value = vehicle.price.toString())
-                VehicleDetailTransactions(transactions, vehicle.price)
+                VehicleDetailTransactions(
+                    transactions.filter { it.vehicleType == vehicleType },
+                    vehicle.price
+                )
             }
         }
     }
@@ -162,7 +168,10 @@ fun VehicleDetailItem(
 }
 
 @Composable
-fun VehicleDetailTransactions(transactions: List<Transaction>, price: Int) {
+fun VehicleDetailTransactions(
+    transactions: List<Transaction>,
+    price: Int,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -250,6 +259,6 @@ fun VehicleDetailTransactionItem(id: Long, createdAt: LocalDateTime) {
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(text = id.toString())
-        Text(text = createdAt.format(DateTimeFormatter.ofPattern("dd MMMM yyyy")))
+        Text(text = createdAt.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss")))
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.achmadss.data.DataState
 import com.achmadss.data.entities.base.VehicleType
+import com.achmadss.data.repositories.TransactionRepository
 import com.achmadss.data.repositories.VehicleRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ class VehicleDetailViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(VehicleDetailUIState())
     val uiState: StateFlow<VehicleDetailUIState> = _uiState.asStateFlow()
 
-    fun getVehicleWithTransactions(
+    fun getVehicleByIdAndType(
         id: Long?,
         vehicleType: VehicleType
     ) = viewModelScope.launch {
@@ -25,48 +26,50 @@ class VehicleDetailViewModel : ViewModel() {
             _uiState.update { it.copy(errorMessage = "Failed to fetch Vehicle: ID cannot be null") }
             return@launch
         }
-        when(vehicleType) {
-            VehicleType.CAR -> {
-                VehicleRepository.getCarWithTransactions(id).collect { result ->
-                    when(result) {
-                        is DataState.Error -> _uiState.update {
-                            it.copy(loading = false, errorMessage = result.error.message ?: it.errorMessage)
-                        }
-                        is DataState.Loading -> {
-                            _uiState.update { it.copy(loading = true) }
-                            delay(1000)
-                        }
-                        is DataState.Success -> {
-                            _uiState.update {
-                                it.copy(
-                                    loading = false,
-                                    vehicle = result.data.car,
-                                    transactions = result.data.transactions
-                                )
-                            }
-                        }
+        VehicleRepository.getVehicleByIdAndType(id, vehicleType).collect { result ->
+            when(result) {
+                is DataState.Error -> _uiState.update {
+                    it.copy(loading = false, errorMessage = result.error.message ?: it.errorMessage)
+                }
+                is DataState.Loading -> {
+                    _uiState.update { it.copy(loading = true) }
+                    delay(1000)
+                }
+                is DataState.Success -> {
+                    _uiState.update {
+                        it.copy(
+                            loading = false,
+                            vehicle = result.data,
+                        )
                     }
                 }
             }
-            VehicleType.MOTORCYCLE -> {
-                VehicleRepository.getMotorcycleWithTransactions(id).collect { result ->
-                    when(result) {
-                        is DataState.Error -> _uiState.update {
-                            it.copy(loading = false, errorMessage = result.error.message ?: it.errorMessage)
-                        }
-                        is DataState.Loading -> {
-                            _uiState.update { it.copy(loading = true) }
-                            delay(1000)
-                        }
-                        is DataState.Success -> {
-                            _uiState.update {
-                                it.copy(
-                                    loading = false,
-                                    vehicle = result.data.motorcycle,
-                                    transactions = result.data.transactions
-                                )
-                            }
-                        }
+        }
+    }
+
+    fun getTransactionsByVehicleIdAndVehicleType(
+        id: Long?,
+        vehicleType: VehicleType
+    ) = viewModelScope.launch {
+        if (id == null) {
+            _uiState.update { it.copy(errorMessage = "Failed to fetch Vehicle: ID cannot be null") }
+            return@launch
+        }
+        TransactionRepository.getTransactionsByVehicleIdAndVehicleType(id, vehicleType).collect { result ->
+            when(result) {
+                is DataState.Error -> _uiState.update {
+                    it.copy(loading = false, errorMessage = result.error.message ?: it.errorMessage)
+                }
+                is DataState.Loading -> {
+                    _uiState.update { it.copy(loading = true) }
+                    delay(1000)
+                }
+                is DataState.Success -> {
+                    _uiState.update {
+                        it.copy(
+                            loading = false,
+                            transactions = result.data
+                        )
                     }
                 }
             }
