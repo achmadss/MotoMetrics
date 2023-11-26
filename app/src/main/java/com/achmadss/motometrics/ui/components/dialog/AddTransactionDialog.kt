@@ -1,6 +1,5 @@
 package com.achmadss.motometrics.ui.components.dialog
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
