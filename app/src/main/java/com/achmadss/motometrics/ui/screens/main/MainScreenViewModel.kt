@@ -50,9 +50,14 @@ class MainScreenViewModel : ViewModel() {
                     _vehicleTabUIState.update { it.copy(loading = true) }
                     delay(1000)
                 }
-                is DataState.Success -> _vehicleTabUIState.update {
+                is DataState.Success -> {
                     originalVehicles = result.data
-                    it.copy(loading = false, vehicles = originalVehicles)
+                    _vehicleTabUIState.update {
+                        it.copy(loading = false, vehicles = originalVehicles)
+                    }
+                    _transactionTabUIState.update {
+                        it.copy(vehicles = originalVehicles)
+                    }
                 }
             }
         }

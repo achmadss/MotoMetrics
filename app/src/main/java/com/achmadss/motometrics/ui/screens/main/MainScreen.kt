@@ -109,7 +109,9 @@ fun NavGraphBuilder.routeMain(
                         vehicles = vehicleTabUIState.vehicles,
                         loading = vehicleTabUIState.loading,
                         contentPadding = it,
-                        onVehicleClick = { id -> navController.navigate("${Routes.VEHICLE}/$id") },
+                        onVehicleClick = { id, type ->
+                            navController.navigate("${Routes.VEHICLE}/$id?vehicleType=${type.name}")
+                        },
                         onRefresh = { viewModel.getAllVehicles() }
                     )
                 }

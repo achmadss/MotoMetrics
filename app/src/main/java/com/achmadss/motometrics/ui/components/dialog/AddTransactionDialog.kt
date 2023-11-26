@@ -1,5 +1,6 @@
 package com.achmadss.motometrics.ui.components.dialog
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,7 +47,6 @@ fun AddTransactionDialog(
         var selectedVehicleType by remember { mutableStateOf(VehicleType.CAR) }
         var selectedVehicle by remember { mutableStateOf<Vehicle?>(null) }
         var isSelectedVehicleError by remember { mutableStateOf(false) }
-
         val filteredVehicles = vehicles.filter { it.vehicleType == selectedVehicleType }
 
         AlertDialog(

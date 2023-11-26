@@ -44,7 +44,7 @@ fun VehicleTabScreen(
     vehicles: List<Vehicle>,
     loading: Boolean,
     contentPadding: PaddingValues,
-    onVehicleClick: (Long) -> Unit,
+    onVehicleClick: (Long, VehicleType) -> Unit,
     onRefresh: () -> Unit,
 ) {
     val state = rememberPullRefreshState(loading, onRefresh)
@@ -91,13 +91,13 @@ fun VehicleTabItem(
     vehicleType: VehicleType,
     name: String,
     stock: Int,
-    onVehicleClick: (Long) -> Unit
+    onVehicleClick: (Long, VehicleType) -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
-        onClick = { onVehicleClick(id) },
+        onClick = { onVehicleClick(id, vehicleType) },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
@@ -157,7 +157,7 @@ fun PreviewVehicleTabScreen() {
             ),
             loading = false,
             contentPadding = ScaffoldDefaults.contentWindowInsets.asPaddingValues(),
-            onVehicleClick = { },
+            onVehicleClick = { _,_ ->},
             onRefresh = { },
         )
     }
