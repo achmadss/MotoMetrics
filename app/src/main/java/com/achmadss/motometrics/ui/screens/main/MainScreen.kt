@@ -1,6 +1,5 @@
 package com.achmadss.motometrics.ui.screens.main
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons

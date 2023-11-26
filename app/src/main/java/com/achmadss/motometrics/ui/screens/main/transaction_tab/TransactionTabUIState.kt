@@ -1,7 +1,5 @@
 package com.achmadss.motometrics.ui.screens.main.transaction_tab
 
-import com.achmadss.data.entities.Car
-import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.TransactionWithVehicle
 import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.motometrics.base.BaseUIState

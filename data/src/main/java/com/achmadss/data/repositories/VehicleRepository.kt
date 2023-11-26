@@ -30,16 +30,6 @@ object VehicleRepository {
         emit(DataState.Success((cars + motorcycles).sortedByDescending { it.createdAt }))
     }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
 
-    fun getAllCars() = flow {
-        emit(DataState.Loading)
-        emit(DataState.Success(LocalDataSourceProvider.vehicleDao().getAllCars()))
-    }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
-
-    fun getAllMotorcycles() = flow {
-        emit(DataState.Loading)
-        emit(DataState.Success(LocalDataSourceProvider.vehicleDao().getAllMotorcycles()))
-    }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
-
     fun getCarWithTransactions(
         id: Long,
     ) = flow {
