@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity
 data class Transaction(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     val vehicleId: Long,
     val vehicleType: VehicleType,
     val createdAt: LocalDateTime = LocalDateTime.now(),

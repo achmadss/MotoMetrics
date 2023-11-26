@@ -52,6 +52,7 @@ object TransactionRepository {
 
 
     fun getAllTransactionsWithVehicles() = flow {
+        emit(DataState.Loading)
         val allTransaction = LocalDataSourceProvider.transactionDao().getAllTransactions()
         val allCars = LocalDataSourceProvider.vehicleDao().getAllCars().associateBy { it.id }
         val allMotorcycles = LocalDataSourceProvider.vehicleDao().getAllMotorcycles().associateBy { it.id }
@@ -62,7 +63,7 @@ object TransactionRepository {
             }
             TransactionWithVehicle(it, vehicle)
         }
-        emit(DataState.Success(transactionsWithVehicles))
+        emit(DataState.Success(transactionsWithVehicles.sortedByDescending { it.transaction.createdAt }))
     }.catch { DataState.Error(it) }.flowOn(Dispatchers.IO)
 
 }

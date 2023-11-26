@@ -1,27 +1,33 @@
 package com.achmadss.motometrics.ui.screens.main
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.achmadss.motometrics.Routes
-import com.achmadss.motometrics.ui.components.topbar.DefaultTabTopBar
+import com.achmadss.motometrics.ui.components.dialog.AddTransactionDialog
+import com.achmadss.motometrics.ui.components.topbar.SearchTopBar
+import com.achmadss.motometrics.ui.screens.main.transaction_tab.TransactionTabScreen
 import com.achmadss.motometrics.ui.screens.main.vehicle_tab.VehicleTabScreen
 
 data class AppNavigationBarItem(
@@ -31,6 +37,7 @@ data class AppNavigationBarItem(
     val onClick: () -> Unit,
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.routeMain(
     navController: NavController,
 ) {
@@ -40,6 +47,8 @@ fun NavGraphBuilder.routeMain(
         val viewModel = viewModel<MainScreenViewModel>()
         val currentTab by viewModel.currentTab.collectAsState()
         val vehicleTabUIState by viewModel.vehicleTabUIState.collectAsState()
+        val transactionTabUIState by viewModel.transactionTabUIState.collectAsState()
+        val context = LocalContext.current
         val navigationBarItems = listOf(
             AppNavigationBarItem { viewModel.changeTab(TabType.Vehicle) },
             AppNavigationBarItem(
@@ -48,13 +57,14 @@ fun NavGraphBuilder.routeMain(
         )
         LaunchedEffect(Unit) {
             viewModel.getAllVehicles()
+            viewModel.getAllTransactionsWithVehicles()
         }
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                  when(currentTab) {
                      TabType.Vehicle -> {
-                         DefaultTabTopBar(
+                         SearchTopBar(
                              title = "Vehicles",
                              onSearch = { }
                          ) {
@@ -63,7 +73,17 @@ fun NavGraphBuilder.routeMain(
                              }
                          }
                      }
-                     TabType.Transaction -> TODO()
+                     TabType.Transaction -> {
+                         TopAppBar(
+                             modifier = Modifier,
+                             title = { Text(text = "Transactions") },
+                             actions = {
+                                 IconButton(onClick = { viewModel.changeAddTransactionDialogVisibility(true) }) {
+                                     Icon(imageVector = Icons.Default.Add, contentDescription = "")
+                                 }
+                             }
+                         )
+                     }
                  }
             },
             bottomBar = {
@@ -86,7 +106,7 @@ fun NavGraphBuilder.routeMain(
             when(currentTab) {
                 TabType.Vehicle -> {
                     VehicleTabScreen(
-                        vehicles = vehicleTabUIState.vehicles,
+                        vehicles = vehicleTabUIState.vehicleInfos,
                         loading = vehicleTabUIState.loading,
                         contentPadding = it,
                         onVehicleClick = {
@@ -95,7 +115,26 @@ fun NavGraphBuilder.routeMain(
                         onRefresh = { viewModel.getAllVehicles() }
                     )
                 }
-                TabType.Transaction -> { /*TODO*/ }
+                TabType.Transaction -> {
+                    AddTransactionDialog(
+                        show = transactionTabUIState.showAddTransactionDialog,
+                        cars = transactionTabUIState.cars,
+                        motorcycles = transactionTabUIState.motorcycles,
+                        onDismissRequest = { viewModel.changeAddTransactionDialogVisibility(false) },
+                        onConfirm = { vehicleId, vehicleType ->
+                            viewModel.createNewTransaction(vehicleId, vehicleType) { success, message ->
+                                if (!success) Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                                else viewModel.changeAddTransactionDialogVisibility(false)
+                            }
+                        }
+                    )
+                    TransactionTabScreen(
+                        transactionsWithVehicles = transactionTabUIState.transactionsWithVehicles,
+                        loading = transactionTabUIState.loading,
+                        contentPadding = it,
+                        onRefresh = { viewModel.getAllTransactionsWithVehicles() },
+                    )
+                }
             }
         }
     }
