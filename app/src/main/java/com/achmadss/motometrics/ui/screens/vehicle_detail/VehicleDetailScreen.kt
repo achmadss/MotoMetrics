@@ -85,7 +85,7 @@ fun VehicleDetailScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            DefaultDetailTopBar(title = "Car Detail", onBackPress = onBackPress) {}
+            DefaultDetailTopBar(title = "Vehicle Detail", onBackPress = onBackPress) {}
         }
     ) {
         if (errorMessage.isNotBlank()) {

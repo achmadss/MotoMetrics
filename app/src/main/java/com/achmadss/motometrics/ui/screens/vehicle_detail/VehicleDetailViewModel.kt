@@ -61,6 +61,7 @@ class VehicleDetailViewModel : ViewModel() {
                         is DataState.Success -> {
                             _uiState.update {
                                 it.copy(
+                                    loading = false,
                                     vehicle = result.data.motorcycle,
                                     transactions = result.data.transactions
                                 )
