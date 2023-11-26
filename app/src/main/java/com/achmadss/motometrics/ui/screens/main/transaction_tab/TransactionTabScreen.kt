@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.achmadss.data.entities.TransactionWithVehicle
+import com.achmadss.motometrics.utils.formatPattern
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -79,8 +80,8 @@ fun TransactionTabItem(transactionWithVehicle: TransactionWithVehicle) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = transactionWithVehicle.transaction.createdAt.format(
-                    DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss")
+                text = transactionWithVehicle.transaction.createdAt.formatPattern(
+                    "dd MMMM yyyy HH:mm:ss"
                 ),
                 style = MaterialTheme.typography.bodySmall,
             )

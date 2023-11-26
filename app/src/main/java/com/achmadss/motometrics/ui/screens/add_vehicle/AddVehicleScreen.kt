@@ -49,6 +49,7 @@ import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.Routes
 import com.achmadss.motometrics.ui.components.topbar.DefaultDetailTopBar
+import com.achmadss.motometrics.utils.formatPattern
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -322,7 +323,7 @@ fun VehicleDetailsForm(
         value = LocalDateTime.ofInstant(
             Instant.ofEpochMilli(datePickerState.selectedDateMillis!!),
             ZoneId.systemDefault()
-        ).format(DateTimeFormatter.ofPattern("dd MMMM yyyy")),
+        ).formatPattern("dd MMMM yyyy"),
         onValueChange = { },
     )
     if (showDatePickerDialog) {

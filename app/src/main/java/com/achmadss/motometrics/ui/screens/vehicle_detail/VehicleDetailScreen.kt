@@ -43,6 +43,7 @@ import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.Routes
 import com.achmadss.motometrics.ui.components.topbar.DefaultDetailTopBar
+import com.achmadss.motometrics.utils.formatPattern
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -120,8 +121,10 @@ fun VehicleDetailScreen(
                 VehicleDetailItem(label = "Name", value = vehicle.name)
                 VehicleDetailItem(label = "Vehicle Type", value = vehicle.vehicleType.name)
                 VehicleDetailItem(label = "Stock", value = vehicle.stock.toString())
-                VehicleDetailItem(label = "Release Date", value = vehicle.releaseDate.format(
-                    DateTimeFormatter.ofPattern("dd MMMM yyyy")))
+                VehicleDetailItem(
+                    label = "Release Date",
+                    value = vehicle.releaseDate.formatPattern("dd MMMM yyyy")
+                )
                 VehicleDetailItem(label = "Color", value = vehicle.color)
                 if (vehicle is Car) {
                     VehicleDetailItem(label = "Engine", value = vehicle.engine)
@@ -259,6 +262,6 @@ fun VehicleDetailTransactionItem(id: Long, createdAt: LocalDateTime) {
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(text = id.toString())
-        Text(text = createdAt.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss")))
+        Text(text = createdAt.formatPattern("dd MMMM yyyy HH:mm:ss"))
     }
 }

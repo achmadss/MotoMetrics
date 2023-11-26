@@ -33,6 +33,7 @@ import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.ui.theme.MotoMetricsTheme
+import com.achmadss.motometrics.utils.formatPattern
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -207,7 +208,7 @@ fun AddTransactionVehicleDetail(
             AddTransactionVehicleDetailItem("Stock", "${vehicle.stock}")
             AddTransactionVehicleDetailItem(
                 "Release Date",
-                vehicle.releaseDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+                vehicle.releaseDate.formatPattern("dd MMMM yyyy")
             )
             AddTransactionVehicleDetailItem("Color", vehicle.color)
             AddTransactionVehicleDetailItem("Price", "${vehicle.price}")
