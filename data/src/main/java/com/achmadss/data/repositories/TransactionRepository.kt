@@ -1,10 +1,7 @@
 package com.achmadss.data.repositories
 
 import com.achmadss.data.DataState
-import com.achmadss.data.dao.VehicleDao
 import com.achmadss.data.database.LocalDataSourceProvider
-import com.achmadss.data.entities.Car
-import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.Transaction
 import com.achmadss.data.entities.TransactionWithVehicle
 import com.achmadss.data.entities.base.Vehicle

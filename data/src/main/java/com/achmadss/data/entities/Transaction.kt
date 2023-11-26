@@ -10,5 +10,5 @@ data class Transaction(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val vehicleId: Long,
     val vehicleType: VehicleType,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 )

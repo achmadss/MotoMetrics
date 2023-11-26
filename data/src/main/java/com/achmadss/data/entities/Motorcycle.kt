@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity
 data class Motorcycle(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     val engine: String,
     val suspension: String,
     val transmission: String,
@@ -15,5 +15,5 @@ data class Motorcycle(
     override val stock: Int,
     override val releaseDate: LocalDateTime,
     override val color: String,
-    override val price: Double
+    override val price: Int
 ) : Vehicle(name, stock, releaseDate, color, price)

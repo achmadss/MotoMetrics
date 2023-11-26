@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "326e9688f535b461887b3da139ad1920",
+    "identityHash": "da3c52eb899df8e814818aecb5678bec",
     "entities": [
       {
         "tableName": "Car",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `capacity` INTEGER NOT NULL, `type` TEXT NOT NULL, `name` TEXT NOT NULL, `stock` INTEGER NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `capacity` INTEGER NOT NULL, `type` TEXT NOT NULL, `name` TEXT NOT NULL, `stock` INTEGER NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` INTEGER NOT NULL, `createdAt` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -59,7 +59,13 @@
           {
             "fieldPath": "price",
             "columnName": "price",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -74,7 +80,7 @@
       },
       {
         "tableName": "Motorcycle",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `suspension` TEXT NOT NULL, `transmission` TEXT NOT NULL, `name` TEXT NOT NULL, `stock` INTEGER NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engine` TEXT NOT NULL, `suspension` TEXT NOT NULL, `transmission` TEXT NOT NULL, `name` TEXT NOT NULL, `stock` INTEGER NOT NULL, `releaseDate` TEXT NOT NULL, `color` TEXT NOT NULL, `price` INTEGER NOT NULL, `createdAt` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -127,7 +133,13 @@
           {
             "fieldPath": "price",
             "columnName": "price",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -182,7 +194,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '326e9688f535b461887b3da139ad1920')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'da3c52eb899df8e814818aecb5678bec')"
     ]
   }
 }

@@ -7,5 +7,6 @@ open class Vehicle(
     open val stock: Int,
     open val releaseDate: LocalDateTime,
     open val color: String,
-    open val price: Double,
+    open val price: Int,
+    open var createdAt: LocalDateTime = LocalDateTime.now(),
 )
