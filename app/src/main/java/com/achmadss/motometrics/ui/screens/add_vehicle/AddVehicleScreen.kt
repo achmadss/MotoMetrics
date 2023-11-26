@@ -29,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +48,6 @@ import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.Routes
-import com.achmadss.motometrics.ui.components.Loading
 import com.achmadss.motometrics.ui.components.dialog.DefaultDetailTopBar
 import java.time.Instant
 import java.time.LocalDateTime
@@ -63,10 +61,8 @@ fun NavGraphBuilder.routeAddVehicle(
         route = Routes.ADD_VEHICLE
     ) {
         val viewModel = viewModel<AddVehicleViewModel>()
-        val uiState by viewModel.uiState.collectAsState()
         val context = LocalContext.current
         AddVehicleScreen(
-            loading = uiState.loading,
             onBackPress = { navController.popBackStack() },
             onDone = {
                 viewModel.addNewVehicle(it, context) {
@@ -80,7 +76,6 @@ fun NavGraphBuilder.routeAddVehicle(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddVehicleScreen(
-    loading: Boolean,
     onBackPress: () -> Unit,
     onDone: (Vehicle) -> Unit,
 ) {

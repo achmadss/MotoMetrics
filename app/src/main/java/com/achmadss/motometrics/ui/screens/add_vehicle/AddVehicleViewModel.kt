@@ -6,17 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.achmadss.data.DataState
 import com.achmadss.data.entities.base.Vehicle
-import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.data.repositories.VehicleRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AddVehicleViewModel : ViewModel() {
-
-    private val _uiState = MutableStateFlow(AddVehicleUIState())
-    val uiState: StateFlow<AddVehicleUIState> = _uiState.asStateFlow()
 
     fun addNewVehicle(
         vehicle: Vehicle,
