@@ -1,5 +1,6 @@
 package com.achmadss.motometrics.ui.screens.main
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -66,9 +67,9 @@ fun NavGraphBuilder.routeMain(
                      TabType.Vehicle -> {
                          SearchTopBar(
                              title = "Vehicles",
-                             onSearch = { }
+                             onSearch = { viewModel.searchCarByName(it) }
                          ) {
-                             IconButton(onClick = { navController.navigate(Routes.ADD_VEHICLE) }) {
+                             IconButton(onClick = { navController.navigate(Routes.VEHICLE) }) {
                                  Icon(imageVector = Icons.Default.Add, contentDescription = "Add Vehicle")
                              }
                          }
@@ -106,20 +107,17 @@ fun NavGraphBuilder.routeMain(
             when(currentTab) {
                 TabType.Vehicle -> {
                     VehicleTabScreen(
-                        vehicles = vehicleTabUIState.vehicleInfos,
+                        vehicles = vehicleTabUIState.vehicles,
                         loading = vehicleTabUIState.loading,
                         contentPadding = it,
-                        onVehicleClick = {
-
-                        },
+                        onVehicleClick = { id -> navController.navigate("${Routes.VEHICLE}/$id") },
                         onRefresh = { viewModel.getAllVehicles() }
                     )
                 }
                 TabType.Transaction -> {
                     AddTransactionDialog(
                         show = transactionTabUIState.showAddTransactionDialog,
-                        cars = transactionTabUIState.cars,
-                        motorcycles = transactionTabUIState.motorcycles,
+                        vehicles = transactionTabUIState.vehicles,
                         onDismissRequest = { viewModel.changeAddTransactionDialogVisibility(false) },
                         onConfirm = { vehicleId, vehicleType ->
                             viewModel.createNewTransaction(vehicleId, vehicleType) { success, message ->

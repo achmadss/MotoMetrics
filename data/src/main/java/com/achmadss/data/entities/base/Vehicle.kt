@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 open class Vehicle(
     open val name: String,
+    open val vehicleType: VehicleType,
     open val stock: Int,
     open val releaseDate: LocalDateTime,
     open val color: String,

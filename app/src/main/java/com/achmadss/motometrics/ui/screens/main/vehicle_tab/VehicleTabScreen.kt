@@ -30,17 +30,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.achmadss.data.entities.base.VehicleInfo
+import com.achmadss.data.entities.Car
+import com.achmadss.data.entities.Motorcycle
+import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.ui.theme.MotoMetricsTheme
-import java.time.LocalDateTime
 import java.util.Locale
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun VehicleTabScreen(
     modifier: Modifier = Modifier,
-    vehicles: List<VehicleInfo>,
+    vehicles: List<Vehicle>,
     loading: Boolean,
     contentPadding: PaddingValues,
     onVehicleClick: (Long) -> Unit,
@@ -65,7 +66,16 @@ fun VehicleTabScreen(
                 item { Text(text = "No Vehicles found") }
             } else {
                 items(vehicles) {
-                    VehicleTabItem(vehicle = it, onVehicleClick = onVehicleClick)
+                    var id = 0L
+                    if (it is Car) id = it.id
+                    if (it is Motorcycle) id = it.id
+                    VehicleTabItem(
+                        id = id,
+                        vehicleType = it.vehicleType,
+                        name = it.name,
+                        stock = it.stock,
+                        onVehicleClick = onVehicleClick
+                    )
                 }
             }
         }
@@ -77,14 +87,17 @@ fun VehicleTabScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VehicleTabItem(
-    vehicle: VehicleInfo,
+    id: Long,
+    vehicleType: VehicleType,
+    name: String,
+    stock: Int,
     onVehicleClick: (Long) -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
-        onClick = { onVehicleClick(vehicle.id) },
+        onClick = { onVehicleClick(id) },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
@@ -94,12 +107,13 @@ fun VehicleTabItem(
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
-                    text = vehicle.vehicleType.name.lowercase()
+                    text = vehicleType.name.lowercase()
                         .replaceFirstChar {
                             if (it.isLowerCase()) it.titlecase(Locale.getDefault())
                             else it.toString()
@@ -107,7 +121,7 @@ fun VehicleTabItem(
                     style = MaterialTheme.typography.labelSmall
                 )
                 Text(
-                    text = vehicle.name,
+                    text = name,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
@@ -122,7 +136,7 @@ fun VehicleTabItem(
                     style = MaterialTheme.typography.labelSmall
                 )
                 Text(
-                    text = "${vehicle.stock}",
+                    text = "$stock",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
@@ -139,24 +153,12 @@ fun PreviewVehicleTabScreen() {
         VehicleTabScreen(
             modifier = Modifier.background(Color.White),
             vehicles = listOf(
-                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
-                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
-                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
-                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
+
             ),
             loading = false,
             contentPadding = ScaffoldDefaults.contentWindowInsets.asPaddingValues(),
             onVehicleClick = { },
             onRefresh = { },
         )
-    }
-}
-
-
-@Preview
-@Composable
-fun PreviewVehicleTabItem() {
-    MotoMetricsTheme {
-        VehicleTabItem(vehicle = VehicleInfo(1L, VehicleType.CAR,"Avanza", 10, LocalDateTime.now())) {}
     }
 }

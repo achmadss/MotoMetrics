@@ -13,6 +13,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.achmadss.motometrics.ui.theme.MotoMetricsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,4 +44,14 @@ fun DefaultDetailTopBar(
             actions.invoke()
         }
     )
+}
+
+@Preview
+@Composable
+fun PreviewDefaultDetailTopBar() {
+    MotoMetricsTheme {
+        DefaultDetailTopBar(title = "Some Title", onBackPress = {  }) {
+
+        }
+    }
 }

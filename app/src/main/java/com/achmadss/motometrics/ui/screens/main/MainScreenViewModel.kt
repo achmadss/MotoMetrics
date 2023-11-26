@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.achmadss.data.DataState
 import com.achmadss.data.entities.Transaction
-import com.achmadss.data.entities.base.VehicleInfo
+import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.data.repositories.TransactionRepository
 import com.achmadss.data.repositories.VehicleRepository
@@ -28,7 +28,7 @@ class MainScreenViewModel : ViewModel() {
     private val _transactionTabUIState = MutableStateFlow(TransactionTabUIState())
     val transactionTabUIState: StateFlow<TransactionTabUIState> = _transactionTabUIState.asStateFlow()
 
-    private var originalVehicleInfos = listOf<VehicleInfo>()
+    private var originalVehicles = listOf<Vehicle>()
 
     fun changeTab(tabType: TabType) {
         _currentTab.update { tabType }
@@ -41,7 +41,7 @@ class MainScreenViewModel : ViewModel() {
     }
 
     fun getAllVehicles() = viewModelScope.launch {
-        VehicleRepository.getAllVehiclesAsVehicleInfo().collect { result ->
+        VehicleRepository.getAllVehicles().collect { result ->
             when(result) {
                 is DataState.Error -> _vehicleTabUIState.update {
                     it.copy(loading = false, errorMessage = result.error.message ?: it.errorMessage)
@@ -51,29 +51,9 @@ class MainScreenViewModel : ViewModel() {
                     delay(1000)
                 }
                 is DataState.Success -> _vehicleTabUIState.update {
-                    originalVehicleInfos = result.data
-                    it.copy(loading = false, vehicleInfos = originalVehicleInfos)
+                    originalVehicles = result.data
+                    it.copy(loading = false, vehicles = originalVehicles)
                 }
-            }
-        }
-        VehicleRepository.getAllCars().collect { result ->
-            when(result) {
-                is DataState.Success -> {
-                    _transactionTabUIState.update {
-                        it.copy(cars = result.data)
-                    }
-                }
-                else -> Unit
-            }
-        }
-        VehicleRepository.getAllMotorcycles().collect { result ->
-            when(result) {
-                is DataState.Success -> {
-                    _transactionTabUIState.update {
-                        it.copy(motorcycles = result.data)
-                    }
-                }
-                else -> Unit
             }
         }
     }
@@ -113,6 +93,17 @@ class MainScreenViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun searchCarByName(query: String) {
+        if (query.isBlank()) {
+            _vehicleTabUIState.update {
+                it.copy(vehicles = originalVehicles)
+            }
+            return
+        }
+        val filteredData = originalVehicles.filter { it.name.contains(query) }
+        _vehicleTabUIState.update { it.copy(vehicles = filteredData) }
     }
 
 }
