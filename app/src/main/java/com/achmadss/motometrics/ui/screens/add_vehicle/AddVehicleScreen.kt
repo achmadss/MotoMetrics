@@ -53,7 +53,6 @@ import com.achmadss.motometrics.utils.formatPattern
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 fun NavGraphBuilder.routeAddVehicle(
     navController: NavController,

@@ -45,7 +45,6 @@ import com.achmadss.motometrics.Routes
 import com.achmadss.motometrics.ui.components.topbar.DefaultDetailTopBar
 import com.achmadss.motometrics.utils.formatPattern
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 fun NavGraphBuilder.routeVehicleDetail(
     navController: NavController

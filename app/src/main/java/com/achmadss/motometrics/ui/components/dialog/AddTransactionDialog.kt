@@ -34,7 +34,6 @@ import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.ui.theme.MotoMetricsTheme
 import com.achmadss.motometrics.utils.formatPattern
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun AddTransactionDialog(
