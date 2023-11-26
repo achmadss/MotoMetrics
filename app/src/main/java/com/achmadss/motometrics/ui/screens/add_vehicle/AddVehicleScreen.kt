@@ -58,7 +58,7 @@ fun NavGraphBuilder.routeAddVehicle(
     navController: NavController,
 ) {
     composable(
-        route = Routes.ADD_VEHICLE
+        route = Routes.VEHICLE
     ) {
         val viewModel = viewModel<AddVehicleViewModel>()
         val context = LocalContext.current
