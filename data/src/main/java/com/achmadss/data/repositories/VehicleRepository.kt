@@ -6,6 +6,7 @@ import com.achmadss.data.entities.Car
 import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleInfo
+import com.achmadss.data.entities.base.VehicleType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -24,15 +25,25 @@ object VehicleRepository {
         emit(DataState.Success(result))
     }.catch { DataState.Error(it) }.flowOn(Dispatchers.IO)
 
-    fun getAllVehicles() = flow {
+    fun getAllVehiclesAsVehicleInfo() = flow {
         emit(DataState.Loading)
         val cars = LocalDataSourceProvider.vehicleDao().getAllCars().map {
-            VehicleInfo(it.id, it.name, it.stock, it.createdAt)
+            VehicleInfo(it.id, VehicleType.CAR, it.name, it.stock, it.createdAt)
         }
         val motorcycles = LocalDataSourceProvider.vehicleDao().getAllMotorcycles().map {
-            VehicleInfo(it.id, it.name, it.stock, it.createdAt)
+            VehicleInfo(it.id, VehicleType.MOTORCYCLE, it.name, it.stock, it.createdAt)
         }
         emit(DataState.Success((cars + motorcycles).sortedByDescending { it.createdAt }))
+    }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
+
+    fun getAllCars() = flow {
+        emit(DataState.Loading)
+        emit(DataState.Success(LocalDataSourceProvider.vehicleDao().getAllCars()))
+    }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
+
+    fun getAllMotorcycles() = flow {
+        emit(DataState.Loading)
+        emit(DataState.Success(LocalDataSourceProvider.vehicleDao().getAllMotorcycles()))
     }.catch { emit(DataState.Error(it)) }.flowOn(Dispatchers.IO)
 
     fun getCarWithTransactions(

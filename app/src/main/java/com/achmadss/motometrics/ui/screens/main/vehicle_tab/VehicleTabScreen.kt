@@ -31,8 +31,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.achmadss.data.entities.base.VehicleInfo
+import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.ui.theme.MotoMetricsTheme
 import java.time.LocalDateTime
+import java.util.Locale
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -97,7 +99,11 @@ fun VehicleTabItem(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
-                    text = "Name",
+                    text = vehicle.vehicleType.name.lowercase()
+                        .replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(Locale.getDefault())
+                            else it.toString()
+                        },
                     style = MaterialTheme.typography.labelSmall
                 )
                 Text(
@@ -133,10 +139,10 @@ fun PreviewVehicleTabScreen() {
         VehicleTabScreen(
             modifier = Modifier.background(Color.White),
             vehicles = listOf(
-                VehicleInfo(1L, "Avanza", 10, LocalDateTime.now()),
-                VehicleInfo(1L, "Avanza", 10, LocalDateTime.now()),
-                VehicleInfo(1L, "Avanza", 10, LocalDateTime.now()),
-                VehicleInfo(1L, "Avanza", 10, LocalDateTime.now()),
+                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
+                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
+                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
+                VehicleInfo(1L, VehicleType.CAR, "Avanza", 10, LocalDateTime.now()),
             ),
             loading = false,
             contentPadding = ScaffoldDefaults.contentWindowInsets.asPaddingValues(),
@@ -151,6 +157,6 @@ fun PreviewVehicleTabScreen() {
 @Composable
 fun PreviewVehicleTabItem() {
     MotoMetricsTheme {
-        VehicleTabItem(vehicle = VehicleInfo(1L, "Avanza", 10, LocalDateTime.now())) {}
+        VehicleTabItem(vehicle = VehicleInfo(1L, VehicleType.CAR,"Avanza", 10, LocalDateTime.now())) {}
     }
 }

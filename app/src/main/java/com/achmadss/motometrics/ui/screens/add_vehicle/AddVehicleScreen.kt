@@ -48,7 +48,7 @@ import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import com.achmadss.motometrics.Routes
-import com.achmadss.motometrics.ui.components.dialog.DefaultDetailTopBar
+import com.achmadss.motometrics.ui.components.topbar.DefaultDetailTopBar
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId

@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultTabTopBar(
+fun SearchTopBar(
     modifier: Modifier = Modifier,
     title: String,
     onSearch: (query: String) -> Unit,

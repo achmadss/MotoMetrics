@@ -1,4 +1,4 @@
-package com.achmadss.motometrics.ui.components.dialog
+package com.achmadss.motometrics.ui.components.topbar
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
