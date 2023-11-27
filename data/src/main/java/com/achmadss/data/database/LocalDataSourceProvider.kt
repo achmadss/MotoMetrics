@@ -13,6 +13,7 @@ object LocalDataSourceProvider {
         ).fallbackToDestructiveMigration().build()
     }
 
+    fun db() = db
     fun vehicleDao() = db.vehicleDao()
     fun transactionDao() = db.transactionDao()
 
