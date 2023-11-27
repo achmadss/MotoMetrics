@@ -5,7 +5,6 @@ import com.achmadss.data.database.LocalDataSource
 import com.achmadss.data.entities.Car
 import com.achmadss.data.entities.Motorcycle
 import com.achmadss.data.entities.Transaction
-import com.achmadss.data.entities.base.Vehicle
 import com.achmadss.data.entities.base.VehicleType
 import org.junit.After
 import org.junit.Test
