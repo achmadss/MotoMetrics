@@ -10,14 +10,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 object TransactionRepository {
 
     fun createNewTransaction(transaction: Transaction) = flow {
         emit(DataState.Loading)
-        handleVehicleTransaction(transaction)
-        val result = LocalDataSourceProvider.transactionDao().createNewTransaction(transaction)
-        if (result == -1L) throw Error("Create new transaction failed")
+        val result = withContext(Dispatchers.IO) {
+            LocalDataSourceProvider.db().runInTransaction {
+                handleVehicleTransaction(transaction)
+                LocalDataSourceProvider.transactionDao().createNewTransaction(transaction).also {
+                    if (it == -1L) throw Error("Create new transaction failed")
+                }
+            }
+        }
         emit(DataState.Success(result))
     }.catch {
         emit(DataState.Error(it))

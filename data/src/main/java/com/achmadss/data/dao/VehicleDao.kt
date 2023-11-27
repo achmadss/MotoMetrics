@@ -20,7 +20,7 @@ interface VehicleDao {
     fun getCarById(id: Long): Car?
 
     @Query("UPDATE Car SET stock = stock - 1 WHERE id = :id AND stock > 0")
-    fun reduceCarStock(id: Long)
+    fun reduceCarStock(id: Long): Int
 
     // motorcycle
     @Upsert
@@ -33,6 +33,6 @@ interface VehicleDao {
     fun getMotorcycleById(id: Long): Motorcycle?
 
     @Query("UPDATE Motorcycle SET stock = stock - 1 WHERE id = :id AND stock > 0")
-    fun reduceMotorcycleStock(id: Long)
+    fun reduceMotorcycleStock(id: Long): Int
 
 }
